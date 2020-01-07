@@ -1,0 +1,21 @@
+{
+    "name": "isleshocky77/desk-com-zendesk",
+    "description": "Transfer Desk.com Data to Zendesk",
+    "type": "project",
+    "require": {
+        "symfony/console": "^5.0",
+        "guzzlehttp/guzzle": "^6.5",
+        "vlucas/phpdotenv": "^4.1",
+        "guzzlehttp/oauth-subscriber": "^0.3.0"
+    },
+    "authors": [
+        {
+            "name": "Stephen Ostrow",
+            "email": "stephen@ostrow.tech"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {"isleshocky77\\": "src/isleshocky77"}
+    }
+}
