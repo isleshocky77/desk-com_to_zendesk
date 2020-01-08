@@ -3,8 +3,8 @@
 require __DIR__.'/../vendor/autoload.php';
 
 use Dotenv\Dotenv;
-use isleshocky77\DeskCom\Command\Articles;
-use isleshocky77\DeskCom\Command\Cases;
+use isleshocky77\DeskCom\Command as DeskComCommand;
+use isleshocky77\Zendesk\Command as ZendeskCommand;
 
 use Symfony\Component\Console\Application;
 
@@ -14,7 +14,8 @@ $dotenv->load();
 
 $application = new Application();
 
-$application->add(new Cases());
-$application->add(new Articles());
+$application->add(new DeskComCommand\Cases());
+$application->add(new DeskComCommand\Articles());
+$application->add(new ZendeskCommand\Articles());
 
 $application->run();

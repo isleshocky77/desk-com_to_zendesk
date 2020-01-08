@@ -18,3 +18,13 @@ $ docker-compose build
 $ docker-compose run console
 $ docker-compose run console desk-com:articles:list
 ```
+
+## Resources
+
+### Desk.com
+
+API for Articles : https://dev.desk.com/API/articles/
+
+### Zendesk
+
+API for Articles : https://developer.zendesk.com/rest_api/docs/help_center/articles
