@@ -2,9 +2,6 @@
 
 namespace isleshocky77\DeskCom\Command;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Subscriber\Oauth\Oauth1;
 use isleshocky77\DeskCom\Api\DeskComClient;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,9 +23,9 @@ class Cases extends Command
             $cases = $payload->_embedded->entries;
 
             foreach ($cases as $case) {
-                $output->writeln(sprintf("%s : %s", $case->id, $case->subject));
+                $output->writeln(sprintf('%s : %s', $case->id, $case->subject));
             }
-        } while (($uri = $payload->_links->next->href) !== null);
+        } while (null !== ($uri = $payload->_links->next->href));
 
         return 0;
     }

@@ -23,9 +23,9 @@ class Topics extends Command
             $topics = $payload->_embedded->entries;
 
             foreach ($topics as $topic) {
-                $output->writeln(sprintf("%s : %s", $topic->id, $topic->name));
+                $output->writeln(sprintf('%s : %s', $topic->id, $topic->name));
             }
-        } while (($uri = $payload->_links->next->href) !== null);
+        } while (null !== ($uri = $payload->_links->next->href));
 
         return 0;
     }

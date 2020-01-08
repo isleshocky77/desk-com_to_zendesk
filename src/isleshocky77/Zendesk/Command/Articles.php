@@ -2,14 +2,9 @@
 
 namespace isleshocky77\Zendesk\Command;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Subscriber\Oauth\Oauth1;
-use isleshocky77\DeskCom\Api\DeskComClient;
 use isleshocky77\Zendesk\Api\ZendeskClient;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -34,10 +29,10 @@ class Articles extends Command
 
             foreach ($articles as $article) {
                 $table->addRow([
-                    $article->id, $article->name
+                    $article->id, $article->name,
                 ]);
             }
-        } while (($uri = $payload->next_page) !== null);
+        } while (null !== ($uri = $payload->next_page));
 
         $table->setFooterTitle(sprintf('Total Articles : %d', $payload->count));
 

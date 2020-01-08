@@ -5,7 +5,6 @@ namespace isleshocky77\Zendesk\Api;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\CurlHandler;
 use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Subscriber\Oauth\Oauth1;
 use Psr\Http\Message\RequestInterface;
 
 class ZendeskClient
@@ -17,11 +16,11 @@ class ZendeskClient
         $stack = HandlerStack::create();
         $stack->setHandler(new CurlHandler());
         $authorization = base64_encode(sprintf('%s/token:%s', getenv('ZENDESK_EMAIL_ADDRESS'), getenv('ZENDESK_TOKEN')));
-        $stack->push(self::addHeader('Authorization', 'Basic ' . $authorization));
+        $stack->push(self::addHeader('Authorization', 'Basic '.$authorization));
 
         self::$_instance = new Client([
             'base_uri' => getenv('ZENDESK_BASE_URI'),
-            'handler' => $stack
+            'handler' => $stack,
         ]);
     }
 
@@ -33,6 +32,7 @@ class ZendeskClient
                 array $options
             ) use ($handler, $header, $value) {
                 $request = $request->withHeader($header, $value);
+
                 return $handler($request, $options);
             };
         };
@@ -46,5 +46,4 @@ class ZendeskClient
 
         return self::$_instance;
     }
-
 }

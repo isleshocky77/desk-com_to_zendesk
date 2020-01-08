@@ -1,8 +1,6 @@
 <?php
 
-
 namespace isleshocky77\DeskCom\Api;
-
 
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
@@ -19,14 +17,14 @@ class DeskComClient
             'consumer_key' => getenv('DESK_COM_CONSUMER_KEY'),
             'consumer_secret' => getenv('DESK_COM_CONSUMER_SECRET'),
             'token' => getenv('DESK_COM_ACCESS_TOKEN'),
-            'token_secret' => getenv('DESK_COM_ACCESS_TOKEN_SECRET')
+            'token_secret' => getenv('DESK_COM_ACCESS_TOKEN_SECRET'),
         ]);
 
         $stack->push($middleware);
 
         self::$_instance = new Client([
             'base_uri' => getenv('DESK_COM_BASE_URI'),
-            'handler' => $stack
+            'handler' => $stack,
         ]);
     }
 
@@ -38,5 +36,4 @@ class DeskComClient
 
         return self::$_instance;
     }
-
 }

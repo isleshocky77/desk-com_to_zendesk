@@ -1,0 +1,16 @@
+<?php
+
+$finder = \PhpCsFixer\Finder::create()
+    ->path('/^src\//')
+    ->path('/^bin\//')
+    ->files()
+    ->in(__DIR__)
+;
+
+return \PhpCsFixer\Config::create()
+    ->setRules([
+        '@Symfony' => true,
+        'array_syntax' => ['syntax' => 'short'],
+    ])
+    ->setFinder($finder)
+    ;

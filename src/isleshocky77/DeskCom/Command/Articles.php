@@ -2,13 +2,9 @@
 
 namespace isleshocky77\DeskCom\Command;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Subscriber\Oauth\Oauth1;
 use isleshocky77\DeskCom\Api\DeskComClient;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -32,10 +28,10 @@ class Articles extends Command
 
             foreach ($articles as $article) {
                 $table->addRow([
-                    $article->id, $article->subject
+                    $article->id, $article->subject,
                 ]);
             }
-        } while (($uri = $payload->_links->next->href) !== null);
+        } while (null !== ($uri = $payload->_links->next->href));
 
         $table->setFooterTitle(sprintf('Total Articles : %d', $payload->total_entries));
 
