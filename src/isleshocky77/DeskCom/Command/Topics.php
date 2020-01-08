@@ -17,7 +17,7 @@ class Topics extends Command
         $client = DeskComClient::getInstance();
 
         $table = new Table($output);
-        $table->setHeaders(['Desk ID', 'Desk Name', 'Zendesk ID', 'Zendesk Name', 'Status']);
+        $table->setHeaders(['ID', 'Name']);
 
         $uri = 'topics';
         do {
