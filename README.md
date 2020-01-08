@@ -55,5 +55,19 @@ $ docker-compose run console desk-com:topics:sync 3603453496234
 [Zendesk Developer]: https://developer.zendesk.com
 [Zendesk API for Articles]: https://developer.zendesk.com/rest_api/docs/help_center/articles
 
+## License ##
 
+    desk-com_to_zendesk is licensed under GPLv3.
 
+    desk-com_to_zendesk is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    desk-com_to_zendesk is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with ninja-forms-mautic.  If not, see <http://www.gnu.org/licenses/>.

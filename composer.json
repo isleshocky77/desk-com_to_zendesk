@@ -1,8 +1,11 @@
 {
     "name": "isleshocky77/desk-com-zendesk",
-    "description": "Transfer Desk.com Data to Zendesk",
+    "description": "A CLI utility to transfer information from Desk.com to Zendesk",
+    "license": "GPL3",
+    "keywords": ["desk.com", "zendesk", "php"],
     "type": "project",
     "require": {
+        "php": ">7.2",
         "ext-json": "*",
         "symfony/console": "^5.0",
         "guzzlehttp/guzzle": "^6.5",
