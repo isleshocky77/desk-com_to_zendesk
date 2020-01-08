@@ -17,7 +17,7 @@ class Categories extends Command
         $client = ZendeskClient::getInstance();
 
         $table = new Table($output);
-        $table->setHeaders(['ID', 'Name',]);
+        $table->setHeaders(['ID', 'Name']);
 
         $categories = $client->getAllCategories();
 

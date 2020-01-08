@@ -37,14 +37,12 @@ class TopicsSync extends Command
             $zendeskSectionId = null;
             $zendeskSectionName = null;
             $zendeskSectionStatus = null;
-            if ($matchingSection !== null) {
+            if (null !== $matchingSection) {
                 $zendeskSectionId = $matchingSection->id;
                 $zendeskSectionName = $matchingSection->name;
                 $zendeskSectionStatus = 'Matched';
-
             } else { // Create a new Section from the Topic
-
-                if ($input->getOption('dry-run') === false) {
+                if (false === $input->getOption('dry-run')) {
                     $zendeskSection = ZendeskClient::getInstance()->createSection($categoryId, $topic->name, $topic->description, $topic->position);
 
                     $zendeskSectionId = $zendeskSection->id;
@@ -62,7 +60,7 @@ class TopicsSync extends Command
                 $topic->name,
                 $zendeskSectionId,
                 $zendeskSectionName,
-                $zendeskSectionStatus
+                $zendeskSectionStatus,
             ]);
         }
 

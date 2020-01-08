@@ -13,6 +13,8 @@ class ZendeskClient
 
     private $client;
 
+    private static $articles;
+
     private static $categories;
 
     private static $sections;
@@ -44,7 +46,7 @@ class ZendeskClient
         };
     }
 
-    public static function getInstance():ZendeskClient
+    public static function getInstance(): ZendeskClient
     {
         if (is_null(self::$_instance)) {
             self::$_instance = new self();
@@ -110,14 +112,14 @@ class ZendeskClient
                     'name' => $name,
                     'description' => $description,
                     'position' => $position,
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $payload = json_decode((string) $response->getBody());
-        $sections = $payload->section;
+        $section = $payload->section;
 
-        return $sections;
+        return $section;
     }
 
     public function findSectionForCategoryByName(int $categoryId, string $name): ?\stdClass
@@ -133,7 +135,7 @@ class ZendeskClient
 
         if (count($matchingSections) > 1) {
             throw new \RuntimeException(sprintf('WARNING: Topic "%s" exists %d times', $name, count($matchingSections)));
-        } elseif (count($matchingSections) == 1) {
+        } elseif (1 == count($matchingSections)) {
             $matchingSection = array_pop($matchingSections);
         } else {
             $matchingSection = null;
@@ -156,7 +158,7 @@ class ZendeskClient
             $response = $this->client->get($uri);
             $payload = json_decode((string) $response->getBody());
 
-            $articles = $payload->sections;
+            $articles = $payload->articles;
 
             foreach ($articles as $article) {
                 self::$articles[] = $article;
@@ -164,5 +166,46 @@ class ZendeskClient
         } while (null !== ($uri = $payload->next_page));
 
         return self::$articles;
+    }
+
+    public function findArticleForSectionByTitle(\stdClass $section, string $title): ?\stdClass
+    {
+        $articles = $this->getAllArticles();
+
+        $matchingArticles = array_filter($articles, function ($article) use ($title) {
+            return $title === $article->title;
+        });
+
+        if (count($matchingArticles) > 1) {
+            throw new \RuntimeException(sprintf('WARNING: Articles "%s" exists %d times', $title, count($matchingArticles)));
+        } elseif (1 == count($matchingArticles)) {
+            $matchingArticle = array_pop($matchingArticles);
+        } else {
+            $matchingArticle = null;
+        }
+
+        return $matchingArticle;
+    }
+
+    public function createArticle(int $sectionId, string $title, string $body, array $labels, int $userSegmentId, int $permissionGroupId, $locale = 'en-us', $draft = true): \stdClass
+    {
+        $uri = sprintf('/api/v2/help_center/%s/sections/%s/articles.json', $locale, $sectionId);
+        $response = $this->client->post($uri, [
+            'json' => [
+                'article' => [
+                    'draft' => $draft,
+                    'title' => $title,
+                    'body' => $body,
+                    'label_names' => $labels,
+                    'user_segment_id' => $userSegmentId,
+                    'permission_group_id' => $permissionGroupId,
+                ],
+            ],
+        ]);
+
+        $payload = json_decode((string) $response->getBody());
+        $article = $payload->article;
+
+        return $article;
     }
 }

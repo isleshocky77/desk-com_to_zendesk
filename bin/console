@@ -16,6 +16,7 @@ $application = new Application();
 
 $application->add(new DeskComCommand\Cases());
 $application->add(new DeskComCommand\Articles());
+$application->add(new DeskComCommand\ArticlesSync());
 $application->add(new DeskComCommand\Topics());
 $application->add(new DeskComCommand\TopicsSync());
 

@@ -14,27 +14,20 @@ class Articles extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $client = DeskComClient::getInstance();
-
         $table = new Table($output);
-        $table->setHeaders(['ID', 'Subject', 'Internal Notes']);
+        $table->setHeaders(['ID', 'Subject', 'Internal Notes', 'Keywords']);
 
-        $uri = 'articles';
-        do {
-            $response = $client->get($uri, ['auth' => 'oauth']);
-            $payload = json_decode((string) $response->getBody());
+        $articles = DeskComClient::getInstance()->findAllArticles();
 
-            $articles = $payload->_embedded->entries;
+        foreach ($articles as $article) {
+            $table->addRow([
+                $article->id, $article->subject,
+                $article->internal_notes,
+                $article->keywords,
+            ]);
+        }
 
-            foreach ($articles as $article) {
-                $table->addRow([
-                    $article->id, $article->subject,
-                    $article->internal_notes,
-                ]);
-            }
-        } while (null !== ($uri = $payload->_links->next->href));
-
-        $table->setFooterTitle(sprintf('Total Articles : %d', $payload->total_entries));
+        $table->setFooterTitle(sprintf('Total Articles : %d', count($articles)));
 
         $table->render();
 

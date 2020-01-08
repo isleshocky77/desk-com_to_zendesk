@@ -26,7 +26,7 @@ class Sections extends Command
                 $section->id,
                 $section->parent_id,
                 $section->name,
-                $section->category_id
+                $section->category_id,
             ]);
         }
 

@@ -28,7 +28,7 @@ class DeskComClient
 
         $stack->push($middleware);
 
-        $this->client =  new Client([
+        $this->client = new Client([
             'base_uri' => getenv('DESK_COM_BASE_URI'),
             'handler' => $stack,
         ]);
@@ -61,10 +61,21 @@ class DeskComClient
             foreach ($articles as $article) {
                 self::$articles[] = $article;
             }
-
         } while (null !== ($uri = $payload->_links->next->href));
 
         return self::$articles;
+    }
+
+    public function getTopicForArticle(\stdClass $article): ?\stdClass
+    {
+        if (!property_exists($article->_links, 'topic')) {
+            return null;
+        }
+
+        preg_match('#/api/v2/topics/(\d+)#', $article->_links->topic->href, $matches);
+        $topicId = $matches[1];
+
+        return $this->findTopicById($topicId);
     }
 
     public function findAllTopics($forceRefresh = false)
@@ -85,9 +96,27 @@ class DeskComClient
             foreach ($topics as $topic) {
                 self::$topics[] = $topic;
             }
-
         } while (null !== ($uri = $payload->_links->next->href));
 
         return self::$topics;
+    }
+
+    public function findTopicById(string $id): ?\stdClass
+    {
+        $topics = $this->findAllTopics();
+
+        $matchingTopics = array_filter($topics, function ($topic) use ($id) {
+            return $id === (string) $topic->id;
+        });
+
+        if (count($matchingTopics) > 1) {
+            throw new \RuntimeException(sprintf('WARNING: Topics "%s" exists %d times', $id, count($matchingTopics)));
+        } elseif (1 == count($matchingTopics)) {
+            $matchingTopic = array_pop($matchingTopics);
+        } else {
+            $matchingTopic = null;
+        }
+
+        return $matchingTopic;
     }
 }
