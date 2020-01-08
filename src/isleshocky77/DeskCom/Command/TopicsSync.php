@@ -20,7 +20,6 @@ class TopicsSync extends Command
         $this->addArgument('category-id', InputArgument::REQUIRED, 'The Zendesk Category to sync with Desk.com Topics as Zendesk Sections');
 
         $this->addOption('dry-run', null, InputOption::VALUE_NONE, 'Do not execute insert / updates');
-        $this->addOption('prefix-with-desk-com-id', null, InputOption::VALUE_OPTIONAL, 'Includes Desk.com Id in Name', true);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
