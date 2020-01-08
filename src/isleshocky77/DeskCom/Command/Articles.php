@@ -17,7 +17,7 @@ class Articles extends Command
         $client = DeskComClient::getInstance();
 
         $table = new Table($output);
-        $table->setHeaders(['ID', 'Subject']);
+        $table->setHeaders(['ID', 'Subject', 'Internal Notes']);
 
         $uri = 'articles';
         do {
@@ -29,6 +29,7 @@ class Articles extends Command
             foreach ($articles as $article) {
                 $table->addRow([
                     $article->id, $article->subject,
+                    $article->internal_notes,
                 ]);
             }
         } while (null !== ($uri = $payload->_links->next->href));
