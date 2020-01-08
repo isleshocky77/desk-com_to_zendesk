@@ -17,6 +17,10 @@ $application = new Application();
 $application->add(new DeskComCommand\Cases());
 $application->add(new DeskComCommand\Articles());
 $application->add(new DeskComCommand\Topics());
+$application->add(new DeskComCommand\TopicsSync());
+
 $application->add(new ZendeskCommand\Articles());
+$application->add(new ZendeskCommand\Categories());
+$application->add(new ZendeskCommand\Sections());
 
 $application->run();

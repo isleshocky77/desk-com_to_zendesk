@@ -10,6 +10,12 @@ class DeskComClient
 {
     private static $_instance;
 
+    private $client;
+
+    private static $articles;
+
+    private static $topics;
+
     public function __construct()
     {
         $stack = HandlerStack::create();
@@ -22,7 +28,7 @@ class DeskComClient
 
         $stack->push($middleware);
 
-        self::$_instance = new Client([
+        $this->client =  new Client([
             'base_uri' => getenv('DESK_COM_BASE_URI'),
             'handler' => $stack,
         ]);
@@ -31,9 +37,57 @@ class DeskComClient
     public static function getInstance()
     {
         if (is_null(self::$_instance)) {
-            new self();
+            self::$_instance = new self();
         }
 
         return self::$_instance;
+    }
+
+    public function findAllArticles($forceRefresh = false)
+    {
+        if (!is_null(self::$articles) && !$forceRefresh) {
+            return self::$articles;
+        }
+
+        self::$articles = [];
+
+        $uri = 'articles';
+        do {
+            $response = $this->client->get($uri, ['auth' => 'oauth']);
+            $payload = json_decode((string) $response->getBody());
+
+            $articles = $payload->_embedded->entries;
+
+            foreach ($articles as $article) {
+                self::$articles[] = $article;
+            }
+
+        } while (null !== ($uri = $payload->_links->next->href));
+
+        return self::$articles;
+    }
+
+    public function findAllTopics($forceRefresh = false)
+    {
+        if (!is_null(self::$topics) && !$forceRefresh) {
+            return self::$topics;
+        }
+
+        self::$topics = [];
+
+        $uri = 'topics';
+        do {
+            $response = $this->client->get($uri, ['auth' => 'oauth']);
+            $payload = json_decode((string) $response->getBody());
+
+            $topics = $payload->_embedded->entries;
+
+            foreach ($topics as $topic) {
+                self::$topics[] = $topic;
+            }
+
+        } while (null !== ($uri = $payload->_links->next->href));
+
+        return self::$topics;
     }
 }

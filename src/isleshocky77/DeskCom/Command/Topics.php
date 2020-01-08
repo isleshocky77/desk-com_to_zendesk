@@ -14,26 +14,18 @@ class Topics extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $client = DeskComClient::getInstance();
-
         $table = new Table($output);
         $table->setHeaders(['ID', 'Name']);
 
-        $uri = 'topics';
-        do {
-            $response = $client->get($uri, ['auth' => 'oauth']);
-            $payload = json_decode((string) $response->getBody());
+        $topics = DeskComClient::getInstance()->findAllTopics();
 
-            $topics = $payload->_embedded->entries;
+        foreach ($topics as $topic) {
+            $table->addRow([
+                $topic->id, $topic->name,
+            ]);
+        }
 
-            foreach ($topics as $topic) {
-                $table->addRow([
-                    $topic->id, $topic->name,
-                ]);
-            }
-        } while (null !== ($uri = $payload->_links->next->href));
-
-        $table->setFooterTitle(sprintf('Total Topics : %d', $payload->total_entries));
+        $table->setFooterTitle(sprintf('Total Topics : %d', count($topics)));
 
         $table->render();
 
